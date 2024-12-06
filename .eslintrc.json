@@ -7,12 +7,18 @@
   ],
   "plugins": ["import"],
   "rules": {
-    "quotes": ["error", "double", {
-      "avoidEscape": true,
-      "allowTemplateLiterals": false
-    }],
-    "indent": ["error", "tab"],
-    "no-mixed-spaces-and-tabs": "error",
+    "quotes": [
+      "error",
+      "double",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": false
+      }
+    ],
+    // "indent": ["error", "tab"],
+    // "no-mixed-spaces-and-tabs": "error",
+    // 난 스페이스 4개라서 위에꺼 주석함
+    "indent": ["error", "space"],
     "no-trailing-spaces": "error",
     "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 0 }],
     "space-in-parens": ["error", "never"],
@@ -22,28 +28,37 @@
     "key-spacing": ["error", { "beforeColon": false, "afterColon": true }],
     "keyword-spacing": ["error", { "before": true, "after": true }],
     "space-before-blocks": ["error", "always"],
-    "space-before-function-paren": ["error", {
-      "anonymous": "never",
-      "named": "never",
-      "asyncArrow": "always"
-    }],
+    "space-before-function-paren": [
+      "error",
+      {
+        "anonymous": "never",
+        "named": "never",
+        "asyncArrow": "always"
+      }
+    ],
     "space-infix-ops": "error",
     "semi": ["error", "always"],
     "semi-spacing": ["error", { "before": false, "after": true }],
-    "comma-dangle": ["error", {
-      "arrays": "always-multiline",
-      "objects": "always-multiline",
-      "imports": "always-multiline",
-      "exports": "always-multiline",
-      "functions": "never"
-    }],
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "always-multiline",
+        "objects": "always-multiline",
+        "imports": "always-multiline",
+        "exports": "always-multiline",
+        "functions": "never"
+      }
+    ],
     "no-var": "error",
     "prefer-const": "error",
-    "no-unused-vars": ["error", {
-      "vars": "all",
-      "args": "none",
-      "ignoreRestSiblings": true
-    }],
+    "no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "none",
+        "ignoreRestSiblings": true
+      }
+    ],
     "object-shorthand": "error",
     "quote-props": ["error", "as-needed"],
     "import/order": [
@@ -78,10 +93,13 @@
         }
       }
     ],
-    "@typescript-eslint/no-unused-vars": ["error", {
-      "vars": "all",
-      "args": "none",
-      "ignoreRestSiblings": true
-    }]
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      {
+        "vars": "all",
+        "args": "none",
+        "ignoreRestSiblings": true
+      }
+    ]
   }
 }
