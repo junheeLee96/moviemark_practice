@@ -5,7 +5,7 @@ import { useToastMessageContext } from "@/providers/ToastMessageProvider";
 import { validateEmail, validatePassword } from "@/utils/validate";
 
 interface UseLoginFormProps {
-  onSuccess?: () => void;
+  onSuccess?: (email: string, exp: number) => void;
   onError?: (error: Error) => void;
 }
 
@@ -15,62 +15,66 @@ interface FormErrors {
 }
 
 export const useLoginForm = ({ onSuccess, onError }: UseLoginFormProps) => {
-	const [email, setEmail] = useState("");
-	const [password, setPassword] = useState("");
-	const [errors, setErrors] = useState<FormErrors>({});
-	const [isLoading, setIsLoading] = useState(false);
-	const { showToastMessage } = useToastMessageContext();
-	const { login } = useAuth();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isLoading, setIsLoading] = useState(false);
+  const { showToastMessage } = useToastMessageContext();
+  const { login } = useAuth();
 
-	const validateForm = useCallback(() => {
-		const newErrors: FormErrors = {};
+  const validateForm = useCallback(() => {
+    const newErrors: FormErrors = {};
 
-		const emailError = validateEmail(email);
-		if (emailError) newErrors.email = emailError;
+    const emailError = validateEmail(email);
+    if (emailError) newErrors.email = emailError;
 
-		const passwordError = validatePassword(password);
-		if (passwordError) newErrors.password = passwordError;
+    const passwordError = validatePassword(password);
+    if (passwordError) newErrors.password = passwordError;
 
-		setErrors(newErrors);
-		return Object.keys(newErrors).length === 0;
-	}, [email, password]);
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  }, [email, password]);
 
-	const handleEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-		setEmail(e.target.value);
-		setErrors(prev => ({ ...prev, email: "" }));
-	}, []);
+  const handleEmailChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setErrors((prev) => ({ ...prev, email: "" }));
+  }, []);
 
-	const handlePasswordChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
-		setPassword(e.target.value);
-		setErrors(prev => ({ ...prev, password: "" }));
-	}, []);
+  const handlePasswordChange = useCallback(
+    (e: ChangeEvent<HTMLInputElement>) => {
+      setPassword(e.target.value);
+      setErrors((prev) => ({ ...prev, password: "" }));
+    },
+    []
+  );
 
-	const handleSubmit = async (e: FormEvent) => {
-		e.preventDefault();
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
 
-		if (!validateForm()) return;
+    if (!validateForm()) return;
 
-		setIsLoading(true);
-		try {
-			await login({ email, password });
-			showToastMessage({ type: "success", message: "로그인 성공!" });
-			onSuccess?.();
-		} catch (error) {
-			const errorMessage = error instanceof Error ? error.message : "로그인 실패";
-			showToastMessage({ type: "error", message: errorMessage });
-			onError?.(error as Error);
-		} finally {
-			setIsLoading(false);
-		}
-	};
+    setIsLoading(true);
+    try {
+      await login({ email, password });
+      showToastMessage({ type: "success", message: "로그인 성공!" });
+      onSuccess?.(email, 123);
+    } catch (error) {
+      const errorMessage =
+        error instanceof Error ? error.message : "로그인 실패";
+      showToastMessage({ type: "error", message: errorMessage });
+      onError?.(error as Error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-	return {
-		email,
-		password,
-		errors,
-		isLoading,
-		handleSubmit,
-		handleEmailChange,
-		handlePasswordChange,
-	};
+  return {
+    email,
+    password,
+    errors,
+    isLoading,
+    handleSubmit,
+    handleEmailChange,
+    handlePasswordChange,
+  };
 };
